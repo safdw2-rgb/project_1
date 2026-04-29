@@ -2,7 +2,6 @@ import os
 import re
 import shutil
 
-
 class FileSorter:
     def __init__(self, target_folder):
         self.base_path = target_folder
@@ -91,13 +90,3 @@ class FileSorter:
         self._sort_files(self.base_path)
         self._unpack_folder()
         return "Sorting completed successfully!"
-
-
-def start():
-    target_folder = input("Enter the path to the folder to sort: ")
-    sorter = FileSorter(target_folder)
-    result = sorter.run()
-    print(result)
-
-if __name__ == "__main__":
-    start()
