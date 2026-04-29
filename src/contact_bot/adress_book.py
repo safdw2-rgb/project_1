@@ -2,6 +2,7 @@ from collections import UserDict
 from src.contact_bot.name import Name
 import pickle
 
+
 class AddressBook(UserDict):
     def add_record(self, record):
         self.data[record.name.value] = record
