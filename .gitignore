@@ -2,3 +2,7 @@ pycache/
 *.py[cod]
 .idea/
 *.iml
+.venv/
+venv/
+.DS_Store
+contact-bot.py
