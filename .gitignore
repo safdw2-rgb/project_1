@@ -5,3 +5,5 @@ pycache/
 .venv/
 venv/
 .DS_Store
+file_sorter_app.egg-info
+build
