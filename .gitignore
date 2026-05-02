@@ -2,3 +2,10 @@ pycache/
 *.py[cod]
 .idea/
 *.iml
+.venv/
+venv/
+.DS_Store
+contact-bot.py
+contact_book.pkl
+file_sorter_app.egg-info
+build
