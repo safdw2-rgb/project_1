@@ -1,7 +1,8 @@
-from src.contact_bot.name import Name
-from src.contact_bot.birthday import Birthday
-from src.contact_bot.phone import Phone
+from .name import Name
+from .birthday import Birthday
+from .phone import Phone
 from datetime import datetime, date
+
 
 class Record:
     def __init__(self, name, birthday=None):

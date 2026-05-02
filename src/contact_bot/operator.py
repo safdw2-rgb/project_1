@@ -1,16 +1,17 @@
-from src.contact_bot.adress_book import AddressBook
-from src.contact_bot.record import Record
-from src.contact_bot.birthday import Birthday
+from .adress_book import AddressBook
+from .record import Record
+from .birthday import Birthday
+
 
 def input_error(func):
-    def check_errors(*args):
+    def check_errors_wrapper(*args, **kwargs):
         try:
-            return func(*args)
+            return func(*args, **kwargs)
         except IndexError:
             return "Error: Please provide all the information."
         except ValueError as e:
             return f"Error: {e}"
-    return check_errors
+    return check_errors_wrapper
 
 class Operator:
 

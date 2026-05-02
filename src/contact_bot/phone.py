@@ -1,4 +1,5 @@
-from src.contact_bot.field import Field
+from .field import Field
+
 
 class Phone(Field):
     @property

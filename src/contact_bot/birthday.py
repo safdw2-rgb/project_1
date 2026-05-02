@@ -1,5 +1,6 @@
-from src.contact_bot.field import Field
+from .field import Field
 from datetime import datetime
+
 
 class Birthday(Field):
     @property
