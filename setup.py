@@ -1,16 +1,17 @@
 from setuptools import setup, find_namespace_packages
 
+
 setup(
-    name="file_sorter_app",
-    version="0.0.1",
-    description="Clean Folder Script",
+    name="helper_bot",
+    version="1.0.0",
+    description="Personal Assistant Bot",
     author="Pavlo F",
     license="MIT",
-    package_dir={"": "src"},
-    packages=find_namespace_packages(where="src"),
+    packages=find_namespace_packages(),
+    py_modules=["main"],
     install_requires=[],
     entry_points={"console_scripts": [
-        "sorter-bot = sorter_bot.file_sorter:start_bot"
+        "helper-bot = main:start_app"
     ]
     }
 )

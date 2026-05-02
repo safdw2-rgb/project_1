@@ -1,6 +1,8 @@
 from .adress_book import AddressBook
 from .record import Record
 from .birthday import Birthday
+from src.sorter_bot import FileSorter
+import os
 
 
 def input_error(func):
@@ -28,6 +30,7 @@ class Operator:
             "delete": self.delete_contact,
             "remove": self.remove_phone_number,
             "birthday": self.show_birthday,
+            "sort": self.sort_files,
             "info": self.show_info,
             "good bye": lambda _: "Good Bye!",
             "close": lambda _: "Good Bye!",
@@ -84,6 +87,7 @@ class Operator:
             "delete [name]                   - Delete a whole contact\n"
             "remove [name] [phone]           - Remove a specific phone\n"
             "birthday [name]                 - Show days to next birthday\n"
+            "sort [folder_path]              - Sort files in the specified folder\n"
             "info                            - Show this help message\n"
             "good bye, close, exit           - Exit the program"
         )
@@ -233,3 +237,20 @@ class Operator:
                 break
 
         return "End of contacts."
+
+    @input_error
+    def sort_files(self, args):
+        if not args:
+            raise ValueError("Please provide the path to the folder. Example: sort /Users/Username/Folder")
+
+        target_folder = " ".join(args)
+
+        if not os.path.exists(target_folder) or not os.path.isdir(target_folder):
+            return f"Error: Folder '{target_folder}' does not exist or is not a directory."
+
+        try:
+            sorter = FileSorter(target_folder)
+            result = sorter.run()
+            return result
+        except Exception as e:
+            return f"Error during sorting: {e}."
