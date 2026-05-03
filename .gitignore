@@ -10,3 +10,4 @@ file_sorter_app.egg-info
 build
 requirements.txt
 helper_bot.egg-info
+helper_bot_history.log

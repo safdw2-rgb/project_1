@@ -11,10 +11,8 @@ class AddressBook(UserDict):
         return self.data.get(name)
 
     def delete(self, name):
-        if name in self.data:
-            del self.data[name]
-            return f"Contact {name} deleted."
-        return f"Contact {name} not found."
+        del self.data[name]
+        return f"Contact {name} deleted."
 
     def rename(self, old_name, new_name):
         if old_name not in self.data:
