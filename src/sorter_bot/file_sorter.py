@@ -109,10 +109,3 @@ class FileSorter:
         self._sort_files(self.base_path)
         self._unpack_folder()
         return "Sorting completed successfully!"
-
-
-def start_bot():
-    target_folder = input("Enter the path to the folder to sort: ")
-    sorter = FileSorter(target_folder)
-    result = sorter.run()
-    print(result)
