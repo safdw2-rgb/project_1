@@ -98,8 +98,8 @@ class Operator:
             "show all                        - Show all contacts\n"
             "delete [name]                   - Delete a whole contact\n"
             "remove [name] [phone]           - Remove a specific phone\n"
-            "add-birthday [name] [date]      - Add or change a birthday (DD.MM.YYYY)\n"
-            "remove-birthday [name]          - Remove a birthday from a contact\n"
+            "add birthday [name] [date]      - Add or change a birthday (DD.MM.YYYY)\n"
+            "remove birthday [name]          - Remove a birthday from a contact\n"
             "birthday [name]                 - Show days to next birthday\n"
             "sort [folder_path]              - Sort files in the specified folder\n"
             "info                            - Show this help message\n"
@@ -270,7 +270,7 @@ class Operator:
             return f"Error: Contact {name} doesn't exist."
 
         if not record.birthday:
-            logging.info(f"Birthday removal failed. Reason: Contact '{name}' doesn't have a birthday set.")
+            logging.warning(f"Birthday removal failed. Reason: Contact '{name}' doesn't have a birthday set.")
             return f"Contact {name} doesn't have a birthday set."
 
         record.birthday = None
