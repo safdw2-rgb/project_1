@@ -17,8 +17,8 @@ To install the project as a package and run it from anywhere in your terminal:
 1. **Clone the repository:**
 
    ```bash
-   git clone <https://github.com/safdw2-rgb/project_1>
-   cd <HelperBot>
+   git clone https://github.com/safdw2-rgb/project_1
+   cd HelperBot
    ```
 
 2. **Create and activate a virtual environment (recommended):**
@@ -38,6 +38,8 @@ To install the project as a package and run it from anywhere in your terminal:
    ```
 
 ## Usage
+
+[![Helper Bot Demo](https://img.youtube.com/vi/1m7nLou_8XI/0.jpg)](https://www.youtube.com/watch?v=1m7nLou_8XI)
 
 After installation, you can launch the bot using the command:
 
