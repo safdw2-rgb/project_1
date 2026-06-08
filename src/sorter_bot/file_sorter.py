@@ -1,3 +1,4 @@
+import concurrent.futures
 import os
 import re
 import shutil
@@ -14,43 +15,50 @@ class FileSorter:
         }
         self.archives_type = ("zip", "gz", "tar")
 
+    def _process_file(self, file, source_path):
+        normalized_file = self._normalize(file)
+
+        if not self._check_and_move_file(normalized_file, source_path):
+            if normalized_file.lower().endswith(self.archives_type):
+                archive_folder = os.path.join(self.base_path, "results", "archives")
+                destination_path = os.path.join(archive_folder, normalized_file)
+                extract_path = destination_path.removesuffix(".zip").removesuffix(".gz").removesuffix(".tar")
+                shutil.unpack_archive(source_path, extract_path)
+                os.remove(source_path)
+
+                for root, dirs, files in os.walk(extract_path, topdown=False):
+                    for name in files:
+                        old_file = os.path.join(root, name)
+                        fixed_name = self._fix_encoding(name)
+                        new_file = os.path.join(root, self._normalize(fixed_name))
+                        os.rename(old_file, new_file)
+
+                    for name in dirs:
+                        old_dir = os.path.join(root, name)
+                        fixed_name = self._fix_encoding(name)
+                        new_dir = os.path.join(root, self._normalize(fixed_name))
+                        os.rename(old_dir, new_dir)
+
+            elif os.path.isfile(source_path):
+                other_folder = os.path.join(self.base_path, "results", "other")
+                destination_path = os.path.join(other_folder, normalized_file)
+                shutil.move(source_path, destination_path)
+
     def _sort_files(self, current_folder):
-        for file in os.listdir(current_folder):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            for file in os.listdir(current_folder):
+                source_path = os.path.join(current_folder, file)
 
-            source_path = os.path.join(current_folder, file)
-            normalized_file = self._normalize(file)
-
-            if not self._check_and_move_file(normalized_file, source_path):
-                if normalized_file.lower().endswith(self.archives_type):
-                    archive_folder = os.path.join(self.base_path, "results", "archives")
-                    destination_path = os.path.join(archive_folder, normalized_file)
-                    extract_path = destination_path.removesuffix(".zip").removesuffix(".gz").removesuffix(".tar")
-                    shutil.unpack_archive(source_path, extract_path)
-                    os.remove(source_path)
-
-                    for root, dirs, files in os.walk(extract_path, topdown=False):
-                        for name in files:
-                            old_file = os.path.join(root, name)
-                            fixed_name = self._fix_encoding(name)
-                            new_file = os.path.join(root, self._normalize(fixed_name))
-                            os.rename(old_file, new_file)
-
-                        for name in dirs:
-                            old_dir = os.path.join(root, name)
-                            fixed_name = self._fix_encoding(name)
-                            new_dir = os.path.join(root, self._normalize(fixed_name))
-                            os.rename(old_dir, new_dir)
-
+                if os.path.isdir(source_path) and "results" not in source_path:
+                    executor.submit(self._sort_files, source_path)
                 elif os.path.isfile(source_path):
-                    other_folder = os.path.join(self.base_path, "results", "other")
-                    destination_path = os.path.join(other_folder, normalized_file)
-                    shutil.move(source_path, destination_path)
+                    executor.submit(self._process_file, file, source_path)
 
-                elif os.path.isdir(source_path) and "results" not in source_path:
-                    self._sort_files(source_path)
-
-                    if not os.listdir(source_path):
-                        os.rmdir(source_path)
+        if current_folder != self.base_path and not os.listdir(current_folder):
+            try:
+                os.rmdir(current_folder)
+            except OSError:
+                pass
 
     def _check_and_move_file(self, file, source_path):
         for folder_name, extensions in self.rules.items():
